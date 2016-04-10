@@ -1,0 +1,38 @@
+{
+    "endpoint": "http://localhost:3000",
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "{marathon.image}",
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "network": "BRIDGE"
+        },
+        "volumes" : []
+    },
+    "healthChecks": [
+        {
+            "portIndex": 0,
+            "protocol": "HTTP",
+            "path": "/",
+            "gracePeriodSeconds": 60,
+            "intervalSeconds": 5,
+            "timeoutSeconds" : 10,
+            "maxConsecutiveFailures": 3
+        }
+    ],
+    "id": "marathon-deploy",
+    "instances": 1,
+    "cpus": 0.1,
+    "mem": 128,
+    "ports": [0],
+    "env": {
+        "NODE_ENV": "production",
+        "PORT": "3000"
+    }
+}
