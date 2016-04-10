@@ -27,6 +27,8 @@ deploy('docker-image-tag')
 
 Options
 ```js
+const deploy = require('marathon-deploy');
+
 const opts = {
     marathonFile: 'location/to/marathon.json' // default 'marathon.json'
 };
