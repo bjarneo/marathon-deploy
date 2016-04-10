@@ -33,7 +33,9 @@ const opts = {
     marathonFile: 'location/to/marathon.json' // default 'marathon.json'
 };
 
-deploy('docker-image-tag', opts).then().catch()
+deploy('docker-image-tag', opts)
+  .then()
+  .catch()
 ```
 
 Tests
