@@ -19,7 +19,7 @@ describe('#deploy', () => {
         done();
     });
 
-    it('asdasd', function(done) {
+    it('should do a put request', function(done) {
         deploy('marathon-deploy')
             .then(res => {
                 assert(typeof res.endpoint === 'undefined');
