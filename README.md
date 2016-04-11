@@ -1,4 +1,4 @@
-Dockr
+Marathon deploy
 ======
 ![Travis](https://travis-ci.org/bjarneo/marathon-deploy.svg?branch=master)
 
