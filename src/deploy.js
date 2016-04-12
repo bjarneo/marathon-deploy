@@ -3,6 +3,26 @@
 const request = require('request-promise');
 const generateJson = require('./generate-json');
 
+const createEndpoint = data => {
+    data.endpoint = data.endpoint + '/v2' + '/apps/' + data.id;
+
+    return data;
+};
+
+const doRequest = data => {
+    const deployUrl = data.endpoint;
+
+    // Must be removed before we put the data
+    delete data.endpoint;
+
+    return request({
+        url: deployUrl,
+        json: true,
+        method: 'PUT',
+        body: data
+    });
+};
+
 module.exports = function deploy(tag, options) {
     if (!options) {
         options = {};
@@ -20,21 +40,10 @@ module.exports = function deploy(tag, options) {
         throw new Error('You need to provide a docker tag!');
     }
 
-    const json = generateJson(opts);
-
-    const deployUrl = json.endpoint + '/v2' + '/apps/' + json.id;
-
-    // Must be removed before we put the data
-    delete json.endpoint;
-
-    return request({
-        url: deployUrl,
-        json: true,
-        method: 'PUT',
-        body: json
-    })
-    .then(res => res)
-    .catch(err => {
-        throw new Error(err);
-    });
+    return generateJson(opts)
+        .then(createEndpoint)
+        .then(doRequest)
+        .catch(err => {
+            throw new Error(err);
+        });
 };
