@@ -5,15 +5,14 @@
   "keywords": [
     "marathon",
     "deploy",
-    "rollback",
-    "scale"
+    "docker"
   ],
   "main": "index.js",
   "scripts": {
     "prepublish": "npm test",
     "posttest": "npm run lint",
     "lint": "eslint .",
-    "test": "mocha -R min test/**/*.test.js"
+    "test": "mocha test/**/*.test.js"
   },
   "author": "Bjarne Oeverli",
   "license": "MIT",
