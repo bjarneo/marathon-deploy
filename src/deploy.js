@@ -1,6 +1,6 @@
 'use strict';
 
-const request = require('request-promise');
+const put = require('./put');
 const generateJson = require('./generate-json');
 
 const createEndpoint = data => {
@@ -15,10 +15,8 @@ const doRequest = data => {
     // Must be removed before we put the data
     delete data.endpoint;
 
-    return request({
+    return put({
         url: deployUrl,
-        json: true,
-        method: 'PUT',
         body: data
     });
 };
