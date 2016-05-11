@@ -1,6 +1,6 @@
 {
   "name": "marathon-deploy",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Deploy a docker image to Marathon",
   "keywords": [
     "marathon",
