@@ -4,10 +4,11 @@ const os = require('os');
 const fs = require('fs');
 const extend = require('extend');
 const template = require('mini-template-engine');
+const config = require('./config');
 
-module.exports = function generateJson(opts) {
+module.exports = function generateJson() {
     const json = new Promise((resolve, reject) => {
-        return fs.readFile(opts.marathonFile, 'utf-8', (err, res) => {
+        return fs.readFile(config.get('options').marathonFile, 'utf-8', (err, res) => {
             if (err) {
                 reject(err);
             }
@@ -20,20 +21,20 @@ module.exports = function generateJson(opts) {
         .then(res => {
             return template(res, {
                 marathon: {
-                    image: opts.image
+                    image: config.get('options').image
                 }
             });
         })
         .then(JSON.parse)
         .then(data => {
             if (!data.labels) {
-                data.labels = opts.labels;
+                data.labels = config.get('options').labels;
             } else {
-                data.labels = extend(data.labels, opts.labels);
+                data.labels = extend(data.labels, config.get('options').labels);
             }
 
-            data.labels.deployedBy = data.labels.deployedBy || opts.user;
-            data.labels.deployedFrom = data.labels.deployedFrom || os.hostname();
+            data.labels.deployedBy = config.get('options').user;
+            data.labels.deployedFrom = os.hostname();
 
             return data;
         })

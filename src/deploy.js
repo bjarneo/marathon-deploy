@@ -2,6 +2,7 @@
 
 const put = require('./put');
 const generateJson = require('./generate-json');
+const config = require('./config');
 
 const createEndpoint = data => {
     data.endpoint = data.endpoint + '/v2' + '/apps/' + data.id;
@@ -39,7 +40,9 @@ module.exports = function deploy(tag, options) {
         throw new Error('You need to provide a docker tag!');
     }
 
-    return generateJson(opts)
+    config.set('options', opts);
+
+    return generateJson()
         .then(createEndpoint)
         .then(doRequest)
         .catch(err => {
