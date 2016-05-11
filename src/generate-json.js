@@ -6,6 +6,27 @@ const extend = require('extend');
 const template = require('mini-template-engine');
 const config = require('./config');
 
+function getTemplate(res) {
+    return template(res, {
+        marathon: {
+            image: config.get('options').image
+        }
+    });
+}
+
+function generateLabels(data) {
+    if (!data.labels) {
+        data.labels = config.get('options').labels;
+    } else {
+        data.labels = extend(data.labels, config.get('options').labels);
+    }
+
+    data.labels.deployedBy = config.get('options').user;
+    data.labels.deployedFrom = os.hostname();
+
+    return data;
+}
+
 module.exports = function generateJson() {
     const json = new Promise((resolve, reject) => {
         return fs.readFile(config.get('options').marathonFile, 'utf-8', (err, res) => {
@@ -18,26 +39,9 @@ module.exports = function generateJson() {
     });
 
     return json
-        .then(res => {
-            return template(res, {
-                marathon: {
-                    image: config.get('options').image
-                }
-            });
-        })
+        .then(getTemplate)
         .then(JSON.parse)
-        .then(data => {
-            if (!data.labels) {
-                data.labels = config.get('options').labels;
-            } else {
-                data.labels = extend(data.labels, config.get('options').labels);
-            }
-
-            data.labels.deployedBy = config.get('options').user;
-            data.labels.deployedFrom = os.hostname();
-
-            return data;
-        })
+        .then(generateLabels)
         .catch(err => {
             throw new Error(err);
         });
