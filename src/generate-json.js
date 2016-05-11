@@ -2,6 +2,7 @@
 
 const os = require('os');
 const fs = require('fs');
+const extend = require('extend');
 const template = require('mini-template-engine');
 
 module.exports = function generateJson(opts) {
@@ -26,11 +27,13 @@ module.exports = function generateJson(opts) {
         .then(JSON.parse)
         .then(data => {
             if (!data.labels) {
-                data.labels = {};
+                data.labels = opts.labels;
+            } else {
+                data.labels = extend(data.labels, opts.labels);
             }
 
-            data.labels.deployedBy = opts.user;
-            data.labels.deployedFrom = os.hostname();
+            data.labels.deployedBy = data.labels.deployedBy || opts.user;
+            data.labels.deployedFrom = data.labels.deployedFrom || os.hostname();
 
             return data;
         })

@@ -8,7 +8,10 @@ describe('#generateJson', () => {
         generateJson({
             user: 'bjarneo',
             marathonFile: 'marathon.json',
-            image: 'marathon-deploy'
+            image: 'marathon-deploy',
+            labels: {
+                env: 'development'
+            }
         }).then(data => {
             assert(data.endpoint === 'http://localhost:3000');
             assert(data.container);

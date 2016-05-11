@@ -29,7 +29,8 @@ module.exports = function deploy(tag, options) {
     const opts = {
         user: process.env.USER || null,
         marathonFile: options.marathonFile || 'marathon.json',
-        image: ''
+        image: '',
+        labels: options.labels || {}
     };
 
     if (tag) {
