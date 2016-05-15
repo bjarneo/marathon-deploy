@@ -1,6 +1,6 @@
 'use strict';
 
-const put = require('./put');
+const request = require('thin-request');
 const generateJson = require('./generate-json');
 const config = require('./config');
 
@@ -16,9 +16,10 @@ const doRequest = data => {
     // Must be removed before we put the data
     delete data.endpoint;
 
-    return put({
-        url: deployUrl,
-        body: data
+    return request(deployUrl, {
+        method: 'PUT',
+        body: data,
+        json: true
     });
 };
 
