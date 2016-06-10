@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const generateJson = require('../src/generate-json');
-const marathonConfig = require('../marathon.json');
+const marathonConfig = Object.assign({}, require('../marathon.json'));
 
 describe('#generateJson', () => {
     it('should generate json based on marathon.json file', function(done) {
@@ -34,6 +34,7 @@ describe('#generateJson', () => {
                 env: 'development'
             }
         }).then(data => {
+            console.log(marathonConfig, data);
             assert(data.endpoint === 'http://localhost:3000');
             assert(data.container);
             assert(data.container.docker.image === 'marathon-deploy');

@@ -46,14 +46,14 @@ module.exports = function generateJson() {
         conf.marathonConfig &&
         conf.marathonConfig.endpoint
     ) {
-        data = Promise.resolve(conf.marathonConfig);
+        data = Promise.resolve(JSON.stringify(conf.marathonConfig));
     } else {
-        data = json()
-            .then(getTemplate)
-            .then(JSON.parse);
+        data = json();
     }
 
     return data
+        .then(getTemplate)
+        .then(JSON.parse)
         .then(generateLabels)
         .catch(err => {
             throw new Error(err);
