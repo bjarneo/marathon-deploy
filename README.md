@@ -38,6 +38,23 @@ deploy('docker-image-tag', opts)
   .catch()
 ```
 
+You can also pass marathon config as an object vs using an own file
+```js
+const deploy = require('marathon-deploy');
+
+const opts = {
+    marathonConfig: {
+        endpoint: 'your-endpoint.com',
+        etc: 'some more data',
+        even: 'more data'
+    }
+};
+
+deploy('docker-image-tag', opts)
+  .then()
+  .catch()
+```
+
 Tests
 ------
 ```bash

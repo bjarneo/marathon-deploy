@@ -32,7 +32,8 @@ module.exports = function deploy(tag, options) {
         user: process.env.USER || null,
         marathonFile: options.marathonFile || 'marathon.json',
         image: '',
-        labels: options.labels || {}
+        labels: options.labels || {},
+        marathonConfig: options.marathonConfig || {}
     };
 
     if (tag) {

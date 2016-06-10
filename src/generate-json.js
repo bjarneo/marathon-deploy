@@ -6,6 +6,16 @@ const extend = require('extend');
 const template = require('mini-template-engine');
 const config = require('./config');
 
+const json = () => new Promise((resolve, reject) => {
+    return fs.readFile(config.get('options').marathonFile, 'utf-8', (err, res) => {
+        if (err) {
+            reject(err);
+        }
+
+        resolve(res);
+    });
+});
+
 function getTemplate(res) {
     return template(res, {
         marathon: {
@@ -28,19 +38,22 @@ function generateLabels(data) {
 }
 
 module.exports = function generateJson() {
-    const json = new Promise((resolve, reject) => {
-        return fs.readFile(config.get('options').marathonFile, 'utf-8', (err, res) => {
-            if (err) {
-                reject(err);
-            }
+    let data;
+    const conf = config.get('options');
 
-            resolve(res);
-        });
-    });
+    // Should validate the marathon config and file
+    if (
+        conf.marathonConfig &&
+        conf.marathonConfig.endpoint
+    ) {
+        data = Promise.resolve(conf.marathonConfig);
+    } else {
+        data = json()
+            .then(getTemplate)
+            .then(JSON.parse);
+    }
 
-    return json
-        .then(getTemplate)
-        .then(JSON.parse)
+    return data
         .then(generateLabels)
         .catch(err => {
             throw new Error(err);
