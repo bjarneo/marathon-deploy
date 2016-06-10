@@ -34,7 +34,6 @@ describe('#generateJson', () => {
                 env: 'development'
             }
         }).then(data => {
-            console.log(marathonConfig, data);
             assert(data.endpoint === 'http://localhost:3000');
             assert(data.container);
             assert(data.container.docker.image === 'marathon-deploy');
